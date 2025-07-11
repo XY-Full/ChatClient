@@ -1,10 +1,13 @@
 #include <iostream>
 #include <string>
 #include <limits>
-#include "SocketManager.h"
+#include <io.h>
 #include <fcntl.h>
 
-#include <io.h>
+#include "SocketManager.h"
+#include "Config.h"
+#include "TextUtils.h"
+
 #undef max
 
 void processInput(const std::string& input) {
@@ -18,53 +21,7 @@ void processInput(const std::string& input) {
     // 添加更多的逻辑...
 }
 
-void stringToBuffer(std::string& str, uint8_t*& buf, int& size) {
-    buf = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(str.data()));
-    size = static_cast<int>(str.size());
-}
-
-//void stringToBuffer(std::wstring& str, uint8_t*& buf, int& size) {
-//    buf = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(str.data()));
-//    size = static_cast<int>(str.size());
-//}
-
-std::string wstring_to_string(const std::wstring& wstr)
-{
-    if (wstr.empty())
-    {
-        return std::string();
-    }
-
-    int size_needed = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
-    if (size_needed == 0)
-    {
-        throw std::runtime_error("WideCharToMultiByte failed: " + std::to_string(GetLastError()));
-    }
-
-    std::string strTo(size_needed, 0);
-    int result = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &strTo[0], size_needed, NULL, NULL);
-    if (result == 0)
-    {
-        throw std::runtime_error("WideCharToMultiByte failed: " + std::to_string(GetLastError()));
-    }
-
-    return strTo;
-}
-
-std::vector<char> wstring_to_utf8(const std::wstring& wstr) {
-    if (wstr.empty()) {
-        return std::vector<char>(1, '\0');
-    }
-
-    int size_needed = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
-    std::vector<char> utf8_str(size_needed + 1); // +1 for null terminator
-
-    WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &utf8_str[0], size_needed, NULL, NULL);
-    utf8_str[size_needed] = '\0'; // Ensure null termination
-
-    return utf8_str;
-}
-
+#if !UseWinMain
 int main() {
     std::string input;
     SocketManager* manager = SocketManager::GetInstance();
@@ -102,7 +59,7 @@ int main() {
         //WideCharToMultiByte(CP_UTF8, 0, input.c_str(), -1, &utf8_input[0], size_needed, NULL, NULL);
 
         // 转换为 UTF-8 编码的 char* 字符串
-        std::vector<char> utf8_str = wstring_to_utf8(input);
+        std::vector<char> utf8_str = TextUtils::wstring_to_utf8(input);
         char* char_ptr = utf8_str.data();
 
 
@@ -119,9 +76,10 @@ int main() {
         // 处理输入
         std::string str(utf8_str.begin(), utf8_str.end());
         //std::cout << str << std::endl;
-        stringToBuffer(str, buf, size);
+        TextUtils::string_to_buffer(str, buf, size);
         manager->SendMessageData(buf, size);
     }
 
     return 0;
 }
+#endif

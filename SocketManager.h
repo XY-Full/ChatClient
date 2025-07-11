@@ -24,6 +24,8 @@
 #define DEFAULT_BUFLEN 4096
 #define HEART_SECOND 10
 
+#define _Win defined(_WIN32) || defined(_WIN64)
+
 class SocketManager {
 private:
     static SocketManager* instance;
@@ -39,7 +41,10 @@ private:
 
     std::chrono::steady_clock::time_point last_receive_time;
 
-    SocketManager() {}
+    SocketManager() {
+        ServerIP = "0";
+        ServerPort = 0;
+    }
 
 public:
     static SocketManager* GetInstance() {

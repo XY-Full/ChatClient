@@ -4,9 +4,6 @@
 #include <locale>
 #include <codecvt>
 
-
-#define _Win defined(_WIN32) || defined(_WIN64)
-
 SocketManager* SocketManager::instance = nullptr;
 std::once_flag SocketManager::flag;
 

@@ -1,3 +1,5 @@
-﻿  Main.cpp
+﻿  SocketManager.cpp
 MyChat\x64\Debug\SocketManager.obj : warning LNK4042: object specified more than once; extras ignored
-  MyChat.vcxproj -> C:\Users\wb.xieyuchao01\Desktop\pyTest\MyChat\MyChat\x64\Debug\MyChat.exe
+MyChat\x64\Debug\TextUtils.obj : warning LNK4042: object specified more than once; extras ignored
+WinMain.obj : error LNK2019: unresolved external symbol "public: static void __cdecl TextUtils::wstring_to_buffer(class std::basic_string<wchar_t,struct std::char_traits<wchar_t>,class std::allocator<wchar_t> > const &,unsigned char * &,int &)" (?wstring_to_buffer@TextUtils@@SAXAEBV?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@AEAPEAEAEAH@Z) referenced in function "void __cdecl ProcessInput(void)" (?ProcessInput@@YAXXZ)
+C:\Users\wb.xieyuchao01\Desktop\pyTest\MyChat\MyChat\x64\Debug\MyChat.exe : fatal error LNK1120: 1 unresolved externals
