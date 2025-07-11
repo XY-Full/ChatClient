@@ -1,5 +1,5 @@
 #include "TextUtils.h"
-
+#include "windows.h"
 #include <stringapiset.h>
 
 std::vector<char> TextUtils::wstring_to_utf8(const std::wstring& wstr)

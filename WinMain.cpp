@@ -1,12 +1,10 @@
-#define UNICODE
-#define _UNICODE
+#include "SocketManager.h"
 #include <windows.h>
 #include <string>
 #include <Richedit.h>
 
 #include "Config.h"
 #include "TextUtils.h"
-//#include "SocketManager.h"
 
 const int ID_EDIT = 101;
 const int ID_OUTPUT = 102;
@@ -34,12 +32,12 @@ void ProcessInput() {
     if (!input.empty()) {
         messages.push_back(L"xyc: " + input);
         UpdateOutput();
-        //SocketManager* manager = SocketManager::GetInstance();
+        SocketManager* manager = SocketManager::GetInstance();
 
         uint8_t* buf;
         int size;
         TextUtils::wstring_to_buffer(input, buf, size);
-        //manager->SendMessageData(buf, size);
+        manager->SendMessageData(buf, size);
         // Çå¿ÕÊäÈë¿ò
         SetWindowText(hEdit, L"");
     }
@@ -142,13 +140,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 #if UseWinMain
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
-    //SocketManager* manager = SocketManager::GetInstance();
+    SocketManager* manager = SocketManager::GetInstance();
     const char* server_ip = "156.225.20.138";
     int server_port = 6670;
-    /*if (!manager->ConnectServer(server_ip, server_port))
+    if (!manager->ConnectServer(server_ip, server_port))
     {
         return 0;
-    }*/
+    }
     const wchar_t CLASS_NAME[] = L"/xieyuchao01";
     WNDCLASS wc = {};
     wc.lpfnWndProc = WindowProc;
