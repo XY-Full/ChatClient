@@ -9,12 +9,13 @@ std::once_flag SocketManager::flag;
 
 bool SocketManager::ConnectServer(const char* server_ip, int server_port)
 {
+    std::stringstream ss;
     if (sock_cache == INVALID_SOCKET)
     {
 #ifdef _Win
         WSADATA wsaData;
         if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-            std::cerr << "WSAStartup fail" << std::endl;
+            LogUtils::Error("WSAStartup fail");
             return false;
         }
 #endif
@@ -22,7 +23,7 @@ bool SocketManager::ConnectServer(const char* server_ip, int server_port)
         // 创建套接字
         sock_cache = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
         if (sock_cache == INVALID_SOCKET) {
-            std::cerr << "create socket failed" << std::endl;
+            LogUtils::Error("create socket failed");
 #ifdef _Win
             WSACleanup();
 #endif
@@ -40,7 +41,9 @@ bool SocketManager::ConnectServer(const char* server_ip, int server_port)
     inet_pton(AF_INET, server_ip, &(server_addr.sin_addr));
 
     if (connect(sock_cache, (sockaddr*)&server_addr, sizeof(server_addr)) == SOCKET_ERROR) {
-        std::cerr << "socket connect failed addr: " << server_ip << " port: " << server_port << std::endl;
+        ss << "socket connect failed addr: " << server_ip << " port: " << server_port;
+        LogUtils::Log(ss.str());
+        ss.clear();
         Disconnect();
         return false;
     }
@@ -54,9 +57,7 @@ bool SocketManager::ConnectServer(const char* server_ip, int server_port)
 
     last_receive_time = std::chrono::steady_clock::now();
 
-    std::stringstream ss;
     ss << "connect to server success: ip: " << server_ip << " port: " << server_port;
-    std::clog << ss.str() << std::endl;
     LogUtils::Log(ss.str());
 
     return true;
@@ -79,7 +80,7 @@ void SocketManager::Disconnect()
     }
     closesocket(sock_cache);
     sock_cache = INVALID_SOCKET;
-    std::clog << "socket disconnected" << std::endl;
+    LogUtils::Log("socket disconnected");
     return;
 }
 
@@ -88,18 +89,19 @@ void SocketManager::ReceiveMessage()
     char recvbuf[DEFAULT_BUFLEN];
     int iResult;
 
+    std::stringstream ss;
+
     while (sock_cache != INVALID_SOCKET) {
         iResult = recv(sock_cache, recvbuf, DEFAULT_BUFLEN, 0);
         if (iResult > 0) {
-            //recvbuf[iResult] = '\0';
-            //std::cout << "Bytes received: " << iResult << std::endl;
             std::string str = "";
             try {
                 str = std::string(recvbuf, iResult);
-                //std::cout << "Received data (UTF-8): " + str << std::endl;
             }
             catch (const std::exception& e) {
-                std::cerr << "Failed to convert to UTF-8: " << e.what() << std::endl;
+                ss << "Failed to convert to UTF-8: " << e.what();
+                LogUtils::Error(ss.str());
+                ss.clear();
                 continue;
             }
             if (str == "PONG")
@@ -117,30 +119,37 @@ void SocketManager::ReceiveMessage()
                     }
                 }
                 else {
-                    std::cout << "Unknown command MessageActionType::ReceiveMessage" << std::endl;
+                    LogUtils::Log("Unknown command MessageActionType::ReceiveMessage");
                 }
             }
-            std::cout << "yeyeye: " << str << std::endl;
+            ss << "yeyeye: " << str;
+            LogUtils::Log(ss.str());
+            ss.clear();
         }
         else if (iResult == 0) {
-            std::cout << "Connection closed by server" << std::endl;
+            LogUtils::Log("Connection closed by server");
         }
         else {
 #ifdef _WIN32
-            std::cerr << "recv failed: " << WSAGetLastError() << std::endl;
+            ss << "recv failed: " << WSAGetLastError();
 #else
-            std::cerr << "recv failed: " << strerror(errno) << std::endl;
+            ss << "recv failed: " << strerror(errno);
 #endif
+            LogUtils::Log(ss.str());
+            ss.clear();
         }
     }
 }
 
 void SocketManager::SendHeartThread()
 {
+    std::stringstream ss;
     std::string str = "xyc";
     uint8_t* buf = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(str.data()));
     int size = static_cast<int>(str.size());
-    std::clog << "heart send: " << str << std::endl;
+    ss << "authorize send: " << str;
+    LogUtils::Log(ss.str());
+    ss.clear();
     SendMessageData(buf, size);
 
     auto lastProcessTime = std::chrono::steady_clock::now();
@@ -158,14 +167,15 @@ void SocketManager::SendHeartThread()
             str = "PING";
             buf = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(str.data()));
             size = static_cast<int>(str.size());
-            //std::clog << "heart send: " << str << std::endl;
             SendMessageData(buf, size);
             lastProcessTime = now;  // 更新上次处理时间
         }
 
         if (receive_duration.count() >= HEART_SECOND * 1.5)
         {
-            std::cerr << "heart pak time out :" << HEART_SECOND * 1.5 << "s" << std::endl;
+            ss << "heart pak time out :" << HEART_SECOND * 1.5 << "s";
+            LogUtils::Error(ss.str());
+            ss.clear();
             Disconnect();
             Reconnect();
         }
@@ -177,9 +187,16 @@ void SocketManager::SendHeartThread()
 
 void SocketManager::Reconnect()
 {
-    std::clog << "try to reconnect ip: " << ServerIP << " port: " << ServerPort << std::endl;
+    std::stringstream ss;
+    ss << "try to reconnect ip: " << ServerIP << " port: " << ServerPort;
+    LogUtils::Log(ss.str());
+    ss.clear();
+
     bool connected = ConnectServer(ServerIP, ServerPort);
-    std::clog << "reconnect result: " << connected << std::endl;
+
+    ss << "reconnect result: " << connected;
+    LogUtils::Log(ss.str());
+
     if (!connected)
     {
         Disconnect();
@@ -190,13 +207,16 @@ bool SocketManager::SendMessageData(uint8_t* buf, int size)
 {
     if (sock_cache == INVALID_SOCKET)
     {
-        std::cerr << "socket invalid, need create socket first" << std::endl;
+        LogUtils::Error("socket invalid, need create socket first");
         return false;
     }
     char* message = reinterpret_cast<char*>(buf);
     // 发送数据
+    std::stringstream ss;
+    ss << "try to send message: " << std::string(message);
+    LogUtils::Log(ss.str());
     if (send(sock_cache, message, size, 0) == SOCKET_ERROR) {
-        std::cerr << "send message fail: " << message << std::endl;
+        LogUtils::Error("send message fail: " + std::string(message));
         return false;
     }
     return true;
