@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 template <typename T>
 class Singleton {
 private:
@@ -8,6 +10,11 @@ private:
 protected:
     // 允许子类重写的虚析构函数
     virtual ~Singleton() = default;
+
+    // 允许子类重写的虚函数
+    virtual void OnCreate() {
+        // 默认实现为空
+    }
 
     // 允许子类重写的虚函数
     virtual void OnDestroy() {
@@ -19,6 +26,10 @@ public:
         if (!instance) {
             instance = std::unique_ptr<T>(new T());
             std::atexit(DestroyInstance);
+            if (instance) {
+                // 调用子类的 OnCreate 方法
+                instance->OnCreate();
+            }
         }
         return *instance;
     }
@@ -40,4 +51,4 @@ protected:
 };
 
 template <typename T>
-std::unique_ptr<T> Singleton<T>::instance = nullptr;
+std::unique_ptr<T> Singleton<T>::instance;

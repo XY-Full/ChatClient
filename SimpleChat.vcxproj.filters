@@ -18,10 +18,10 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\TextUtils.h">
+    <ClInclude Include="include\Utils\TextUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SocketManager.h">
+    <ClInclude Include="include\Manager\SocketManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Const\ConstMessage.h">
@@ -30,21 +30,39 @@
     <ClInclude Include="include\Common\Singleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utils\LogUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Manager\ApplicationInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Manager\LogManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TextUtils.cpp">
+    <ClCompile Include="src\Scripts\Utils\TextUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Main.cpp">
+    <ClCompile Include="src\Scripts\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SocketManager.cpp">
+    <ClCompile Include="src\Scripts\Manager\SocketManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Config.h">
+    <ClCompile Include="include\Common\Config.h">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\WinMain.cpp">
+    <ClCompile Include="src\Scripts\WinMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scripts\Utils\LogUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scripts\Manager\ApplicationInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scripts\Manager\LogManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

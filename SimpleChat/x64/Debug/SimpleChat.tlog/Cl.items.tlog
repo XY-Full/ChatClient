@@ -1,5 +1,8 @@
-C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\include\Config.h;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\Config.obj
-C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Main.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\Main.obj
-C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\SocketManager.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\SocketManager.obj
-C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\TextUtils.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\TextUtils.obj
-C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\WinMain.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\WinMain.obj
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\include\Common\Config.h;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\Config.obj
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\Manager\ApplicationInstance.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\ApplicationInstance.obj
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\Main.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\Main.obj
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\Manager\LogManager.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\LogManager.obj
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\Manager\SocketManager.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\SocketManager.obj
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\Utils\LogUtils.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\LogUtils.obj
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\Utils\TextUtils.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\TextUtils.obj
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\WinMain.cpp;C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\SimpleChat\x64\Debug\WinMain.obj
