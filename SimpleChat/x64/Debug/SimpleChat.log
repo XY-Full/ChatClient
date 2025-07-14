@@ -1,0 +1,8 @@
+﻿  WinMain.cpp
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\WinMain.cpp(1,1): warning C4005: 'UNICODE': macro redefinition
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\WinMain.cpp(1,1): message : 'UNICODE' previously declared on the command line
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\WinMain.cpp(2,1): warning C4005: '_UNICODE': macro redefinition
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\WinMain.cpp(2,1): message : '_UNICODE' previously declared on the command line
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\WinMain.cpp(95,19): warning C4312: 'type cast': conversion from 'const int' to 'HMENU' of greater size
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\WinMain.cpp(117,19): warning C4312: 'type cast': conversion from 'const int' to 'HMENU' of greater size
+  SimpleChat.vcxproj -> C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\x64\Debug\SimpleChat.exe
