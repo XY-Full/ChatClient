@@ -7,6 +7,25 @@
 
 std::once_flag SocketManager::flag;
 
+void SocketManager::TiggerMessageAction(MessageActionType type, std::string str)
+{
+    if (!MessageActionMap.empty())
+    {
+        auto it = MessageActionMap.find(type);
+        if (it != MessageActionMap.end()) {
+            // eval all function in vector
+            for (const auto& func : it->second) {
+                func(str);
+            }
+        }
+        else {
+            std::stringstream ss;
+            ss << "Unknown command" << enumToString(type);
+            LogUtils::Log("Unknown command MessageActionType::ReceiveMessage");
+        }
+    }
+}
+
 bool SocketManager::ConnectServer(const char* server_ip, int server_port)
 {
     std::stringstream ss;
@@ -81,6 +100,7 @@ void SocketManager::Disconnect()
     closesocket(sock_cache);
     sock_cache = INVALID_SOCKET;
     LogUtils::Log("socket disconnected");
+    TiggerMessageAction(MessageActionType::Disconnected, "");
     return;
 }
 
@@ -109,19 +129,7 @@ void SocketManager::ReceiveMessage()
                 last_receive_time = std::chrono::steady_clock::now();
                 continue;
             }
-            if (!MessageActionMap.empty())
-            {
-                auto it = MessageActionMap.find(MessageActionType::ReceiveMessage);
-                if (it != MessageActionMap.end()) {
-                    // eval all function in vector
-                    for (const auto& func : it->second) {
-                        func(str);
-                    }
-                }
-                else {
-                    LogUtils::Log("Unknown command MessageActionType::ReceiveMessage");
-                }
-            }
+            TiggerMessageAction(MessageActionType::ReceiveMessage, str);
             ss << "yeyeye: " << str;
             LogUtils::Log(ss.str());
             ss.clear();
@@ -137,6 +145,7 @@ void SocketManager::ReceiveMessage()
 #endif
             LogUtils::Log(ss.str());
             ss.clear();
+            Disconnect();
         }
     }
 }

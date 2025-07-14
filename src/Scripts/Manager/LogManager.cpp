@@ -37,7 +37,7 @@ void LogManager::WriterFunction()
             EnsureLogFile();
             _file << _messageQueue.front() << '\n';
             if (_file.fail()) {
-                throw std::runtime_error("写入日志文件失败");
+                throw std::runtime_error("log write fail");
             }
             _messageQueue.pop();
         }

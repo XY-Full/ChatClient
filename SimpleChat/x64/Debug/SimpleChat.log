@@ -1,4 +1,4 @@
 ﻿  WinMain.cpp
-C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\WinMain.cpp(94,19): warning C4312: 'type cast': conversion from 'const int' to 'HMENU' of greater size
-C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\WinMain.cpp(116,19): warning C4312: 'type cast': conversion from 'const int' to 'HMENU' of greater size
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\WinMain.cpp(99,19): warning C4312: 'type cast': conversion from 'const int' to 'HMENU' of greater size
+C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\src\Scripts\WinMain.cpp(121,19): warning C4312: 'type cast': conversion from 'const int' to 'HMENU' of greater size
   SimpleChat.vcxproj -> C:\Users\wb.xieyuchao01\Desktop\pyTest\CppProject\SimpleChat\x64\Debug\SimpleChat.exe

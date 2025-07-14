@@ -59,6 +59,8 @@ private:
         Disconnect();
     }
 
+    void TiggerMessageAction(MessageActionType type, std::string str);
+
 public:
 
     inline std::string GetDecryptKey() { return decrypt_key; }

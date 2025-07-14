@@ -21,17 +21,17 @@ std::vector<char> TextUtils::wstring_to_utf8(const std::wstring& wstr)
 
 void TextUtils::string_to_buffer(std::string& str, uint8_t*& buf, int& size)
 {
-    buf = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(str.data()));
     size = static_cast<int>(str.size());
+    buf = new uint8_t[size];
+    std::memcpy(buf, str.data(), size);
 }
 
 void TextUtils::wstring_to_buffer(const std::wstring& wstr, uint8_t*& buf, int& size)
 {
     std::vector<char> utf8_str = wstring_to_utf8(wstr);
-    char* char_ptr = utf8_str.data();
-    std::string str(utf8_str.begin(), utf8_str.end());
-    buf = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(str.data()));
-    size = static_cast<int>(str.size());
+    size = static_cast<int>(utf8_str.size());
+    buf = new uint8_t[size];
+    std::memcpy(buf, utf8_str.data(), size);
 }
 
 bool TextUtils::string_to_wchar_buffer(const std::string& str, wchar_t buffer[], size_t buffer_size) {

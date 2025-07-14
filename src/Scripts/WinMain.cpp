@@ -39,9 +39,7 @@ void ProcessInput() {
         std::vector<char> utf8_str = TextUtils::wstring_to_utf8(input);
         char* char_ptr = utf8_str.data();
         std::string str(utf8_str.begin(), utf8_str.end());
-        buf = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(str.data()));
-        size = static_cast<int>(str.size());
-        //TextUtils::wstring_to_buffer(input, buf, size);
+        TextUtils::wstring_to_buffer(input, buf, size);
         SocketManager::GetInstance().SendMessageData(buf, size);
         // «Âø’ ‰»ÎøÚ
         SetWindowText(hEdit, L"");
@@ -52,6 +50,13 @@ void OnReceiveMessage(std::string str)
 {
     std::wstring wstr = TextUtils::string_to_wstring(str);
     messages.push_back(L"yeyeye: " + wstr);
+    UpdateOutput();
+}
+
+void OnDisconnect(std::string str)
+{
+    std::wstring wstr = TextUtils::string_to_wstring(str);
+    messages.push_back(L"server disconnected: " + wstr);
     UpdateOutput();
 }
 
@@ -171,6 +176,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
         return 0;
     }
     SocketManager::GetInstance().RegisterMessageEvent(MessageActionType::ReceiveMessage, OnReceiveMessage);
+    SocketManager::GetInstance().RegisterMessageEvent(MessageActionType::Disconnected, OnDisconnect);
     
     const wchar_t CLASS_NAME[] = L"/xieyuchao01";
     WNDCLASS wc = {};
