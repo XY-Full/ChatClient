@@ -216,7 +216,7 @@ void SocketManager::ReceiveMessage()
             }
             else if (iResult == 0) {
                 LogUtils::Log("Connection closed by server");
-                server_connected = false;
+                Disconnect();
                 Reconnect();
             }
             else {
@@ -234,6 +234,8 @@ void SocketManager::ReceiveMessage()
                 }
                 ss << "recv failed: " << strerror(errno);
 #endif
+                Disconnect();
+                Reconnect();
                 LogUtils::Log(ss.str());
                 ss.str("");
             }
