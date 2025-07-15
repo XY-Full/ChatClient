@@ -27,7 +27,7 @@ std::string enumToString(EnumType value) {
 enum class MessageActionType {
 	SendMessage,
 	ReceiveMessage,
-	Disconnected
+    OnPrintMessage
 };
 
-ENUM_TO_STRING(MessageActionType, "SendMessage", "ReceiveMessage", "Disconnected")
+ENUM_TO_STRING(MessageActionType, "SendMessage", "ReceiveMessage", "OnPrintMessage")

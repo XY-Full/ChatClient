@@ -48,15 +48,17 @@ void ProcessInput() {
 
 void OnReceiveMessage(std::string str)
 {
+    if (str.empty()) return;
     std::wstring wstr = TextUtils::string_to_wstring(str);
     messages.push_back(L"yeyeye: " + wstr);
     UpdateOutput();
 }
 
-void OnDisconnect(std::string str)
+void OnPrintMessage(std::string str)
 {
+    if (str.empty()) return;
     std::wstring wstr = TextUtils::string_to_wstring(str);
-    messages.push_back(L"server disconnected: " + wstr);
+    messages.push_back(wstr);
     UpdateOutput();
 }
 
@@ -176,7 +178,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
         return 0;
     }
     SocketManager::GetInstance().RegisterMessageEvent(MessageActionType::ReceiveMessage, OnReceiveMessage);
-    SocketManager::GetInstance().RegisterMessageEvent(MessageActionType::Disconnected, OnDisconnect);
+    SocketManager::GetInstance().RegisterMessageEvent(MessageActionType::OnPrintMessage, OnPrintMessage);
     
     const wchar_t CLASS_NAME[] = L"/xieyuchao01";
     WNDCLASS wc = {};

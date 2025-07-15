@@ -17,6 +17,7 @@
 
 #include <vector>
 #include <mutex>
+#include <shared_mutex>
 #include <string>
 #include <thread>
 #include <chrono>
@@ -27,7 +28,7 @@
 #include "Const/ConstMessage.h"
 
 #define DEFAULT_BUFLEN 4096
-#define HEART_SECOND 10
+#define HEART_SECOND 5
 
 #define _Win defined(_WIN32) || defined(_WIN64)
 
@@ -41,6 +42,13 @@ private:
     const char* ServerIP;
     int ServerPort;
 
+    std::condition_variable cv;
+    std::atomic<bool> should_stop{ false };
+    std::atomic<bool> server_connected{ false };
+    std::atomic<bool> server_connecting{ false };
+    std::atomic<bool> heart_received{ false };
+    std::mutex socket_mutex;
+
     SOCKET sock_cache = INVALID_SOCKET;
     std::thread receive_thread;
     std::thread heart_thread;
@@ -48,7 +56,7 @@ private:
 
     std::map<MessageActionType, std::vector<FunctionInString>> MessageActionMap;
 
-    std::chrono::steady_clock::time_point last_receive_time;
+    std::chrono::steady_clock::time_point last_send_time;
 
     SocketManager() {
         ServerIP = "0";
@@ -60,6 +68,8 @@ private:
     }
 
     void TiggerMessageAction(MessageActionType type, std::string str);
+
+    void SendAuthorizeMessage();
 
 public:
 
