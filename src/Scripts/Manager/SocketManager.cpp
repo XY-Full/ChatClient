@@ -68,8 +68,8 @@ bool SocketManager::ConnectServer(const char* server_ip, int server_port)
     }
     else
     {
-        server_connecting = false;
         LogUtils::Log("sock_cache valid");
+        server_connecting = false;
         return true;
     }
 
@@ -108,7 +108,7 @@ bool SocketManager::ConnectServer(const char* server_ip, int server_port)
         ss << "socket connect failed addr: " << server_ip << " port: " << server_port;
         LogUtils::Log(ss.str());
         ss.str("");
-        Disconnect();
+        server_connecting = false;
         return false;
     }
 
@@ -131,6 +131,7 @@ bool SocketManager::ConnectServer(const char* server_ip, int server_port)
     }
 
     last_send_time = std::chrono::steady_clock::now();
+    heart_received = true;
 
     ss << "connect to server success: ip: " << server_ip << " port: " << server_port;
     LogUtils::Log(ss.str());
@@ -187,7 +188,7 @@ void SocketManager::ReceiveMessage()
         }
 
         if (activity == 0) {
-            // 超时，继续下一次循环
+            // 超时，继续下一次循环，可能是没收到消息
             continue;
         }
 
@@ -207,6 +208,7 @@ void SocketManager::ReceiveMessage()
                 if (str == "PONG")
                 {
                     heart_received = true;
+                    LogUtils::Log("heart PONG received");
                     continue;
                 }
                 TiggerMessageAction(MessageActionType::ReceiveMessage, str);
@@ -234,10 +236,10 @@ void SocketManager::ReceiveMessage()
                 }
                 ss << "recv failed: " << strerror(errno);
 #endif
-                Disconnect();
-                Reconnect();
                 LogUtils::Log(ss.str());
                 ss.str("");
+                Disconnect();
+                Reconnect();
             }
         }
     }
@@ -254,8 +256,11 @@ void SocketManager::SendHeartThread()
     heart_received = true;
     while (!should_stop)
     {
-        if (sock_cache == INVALID_SOCKET && !server_connected) continue;
-        if (server_connecting) continue;
+        if (sock_cache == INVALID_SOCKET || !server_connected || server_connecting) {
+            last_send_time = std::chrono::steady_clock::now();
+            heart_received = true;
+            continue;
+        }
 
         // 获取当前时间
         auto now = std::chrono::steady_clock::now();

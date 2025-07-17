@@ -28,7 +28,7 @@
 #include "Const/ConstMessage.h"
 
 #define DEFAULT_BUFLEN 4096
-#define HEART_SECOND 5
+#define HEART_SECOND 10
 
 #define _Win defined(_WIN32) || defined(_WIN64)
 
@@ -46,7 +46,7 @@ private:
     std::atomic<bool> should_stop{ false };
     std::atomic<bool> server_connected{ false };
     std::atomic<bool> server_connecting{ false };
-    std::atomic<bool> heart_received{ false };
+    std::atomic<bool> heart_received{ true };
     std::mutex socket_mutex;
 
     SOCKET sock_cache = INVALID_SOCKET;
