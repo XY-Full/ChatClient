@@ -314,6 +314,7 @@ bool SocketManager::SendMessageData(uint8_t* buf, int size)
         LogUtils::Error("socket invalid, need create socket first");
         return false;
     }
+    std::unique_lock<std::mutex> lock(send_mutex);
     char* message = reinterpret_cast<char*>(buf);
     // ·¢ËÍÊı¾İ
     std::stringstream ss;

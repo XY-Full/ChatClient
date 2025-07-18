@@ -48,6 +48,7 @@ private:
     std::atomic<bool> server_connecting{ false };
     std::atomic<bool> heart_received{ true };
     std::mutex socket_mutex;
+    std::mutex send_mutex;
 
     SOCKET sock_cache = INVALID_SOCKET;
     std::thread receive_thread;
